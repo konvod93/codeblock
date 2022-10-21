@@ -1,5 +1,7 @@
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType  } from "next";
 
+import { useEffect } from "react";
+
 import fs from 'fs';
 import path from 'path';
 import matter from "gray-matter";
@@ -7,15 +9,23 @@ import { serialize } from 'next-mdx-remote/serialize';
 import { MDXRemote } from "next-mdx-remote";
 import BlogHeaderComponent from "../../components/BlogHeader.component";
 
+import hljs from "highlight.js";
+import typescript from 'highlight.js/lib/languages/typescript';
+import 'highlight.js/styles/vs2015.css';
+hljs.registerLanguage('typescript', typescript);
+
 const components = {
     BlogHeaderComponent
 }
 
 
 export default function Article({ source, }: InferGetStaticPropsType<typeof getStaticProps>) {
+    useEffect(() => {
+        hljs.highlightAll()
+    }, [])
     return (
         <div style={{ width: '600px', margin: 'auto' }}>
-            <MDXRemote {...source} components={components}/>
+            <MDXRemote {...source} components={components} />
         </div>
     )
 }

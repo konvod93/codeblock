@@ -22,6 +22,7 @@ const HeaderComponent: FC<Props> = ({ mode, onChange }) => {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar style={{ backgroundColor: customTheme.palette.background.paper, color: customTheme.palette.text.primary }} position="static">
                 <Toolbar>
+                    <Link href='/' passHref>
                     <IconButton
                         size="large"
                         edge="start"
@@ -31,6 +32,7 @@ const HeaderComponent: FC<Props> = ({ mode, onChange }) => {
                     >
                         <MenuIcon />
                     </IconButton>
+                    </Link>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Konstantin Vodolazhskii
                     </Typography>
