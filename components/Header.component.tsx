@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { PaletteMode, useTheme } from '@mui/material';
 import { FC } from 'react'
 import AppBar from '@mui/material/AppBar';
