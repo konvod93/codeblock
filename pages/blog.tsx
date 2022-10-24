@@ -1,5 +1,5 @@
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
-import { useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import CardComponent from "../components/Card.component";
 import { Post } from "../models/Post.interface";
 
@@ -12,10 +12,10 @@ import { Tag, tagFilters } from "../models/Tag";
 
 
 const Blog: NextPage = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const [filteredPosts, setFilteredPosts]= useState<Post[]>(posts);
+  const [filteredPosts, setFilteredPosts] = useState<Post[]>(posts);
   const [postTitles, setPostTitles] = useState<string[]>(
     posts.map((post: Post) => post.metaData.title.toLowerCase())
-    );
+  );
   const [searchString, setSearchString] = useState('');
   const [isAllTag, setIsAllTag] = useState(true);
   const [tags, setTags] = useState<Tag[]>([]);
@@ -23,16 +23,41 @@ const Blog: NextPage = ({ posts }: InferGetStaticPropsType<typeof getStaticProps
   useEffect(() => {
     const filteredPostsTitles: string[] = [...postTitles].filter(
       (title: string) => title.indexOf(searchString.trim().toLowerCase()) !== -1
-      );    
-  }, [searchString, postTitles])
+    );
+    const refilteredPosts: Post[] = [...posts].filter((post: Post) =>
+      filteredPostsTitles.includes(post.metaData.title.toLowerCase())
+    );
+
+    setFilteredPosts(refilteredPosts);
+
+  }, [searchString, postTitles, posts]);
+
+  useEffect(() => {
+    if (tags.length > 0) {
+      setIsAllTag(false);
+    } else {
+      setIsAllTag(true);
+    }
+  }, [tags])
 
   return (
     <>
       <Typography align='center' color='primary' variant='h1'>
         Blog
       </Typography>
-      <Paper>
-        <TextField style={{ width: 400 }} placeholder='Search...' value={}/>
+      <Paper 
+      component='form' 
+      sx={{width: 400, margin: '20px auto', boxShadow: 0}}
+      >
+        <TextField 
+        style={{ width: 400 }} 
+        placeholder='Search...' 
+        value={searchString} 
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+        setSearchString(e.target.value)
+        } 
+        />
+        {searchString}
       </Paper>
       <div style={{ display: 'flex' }}>
         {posts.map((post: Post, index: number) => (
