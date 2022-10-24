@@ -1,15 +1,24 @@
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
+import { useState } from "react";
 import CardComponent from "../components/Card.component";
 import { Post } from "../models/Post.interface";
-import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
+
 import fs from 'fs';
 import path from "path";
 import matter from "gray-matter";
 import { TextField, Typography, Chip, Stack, Paper } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
+import { Tag } from "../models/Tag";
+
 
 const Blog: NextPage = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const [state, setState] = useState(initialState)
+  const [filtredPosts, setFiltredPosts]= useState(posts);
+  const [postTitles, setPostTitles] = useState<string[]>(
+    posts.map((post: Post) => post.metaData.title.toLowerCase())
+    );
+  const [searchString, setSearchString] = useState<Post[]>(posts);
+  const [isAllTag, setIsAllTag] = useState(true);
+  const [tags, setTags] = useState<Tag[]>([]);
   return (
     <>
       <Typography align='center' color='primary' variant='h1'>
