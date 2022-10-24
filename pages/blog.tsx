@@ -8,20 +8,22 @@ import path from "path";
 import matter from "gray-matter";
 import { TextField, Typography, Chip, Stack, Paper } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { Tag } from "../models/Tag";
+import { Tag, tagFilters } from "../models/Tag";
 
 
 const Blog: NextPage = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const [filteredPosts, setFilteredPosts]= useState(posts);
+  const [filteredPosts, setFilteredPosts]= useState<Post[]>(posts);
   const [postTitles, setPostTitles] = useState<string[]>(
     posts.map((post: Post) => post.metaData.title.toLowerCase())
     );
-  const [searchString, setSearchString] = useState<Post[]>(posts);
+  const [searchString, setSearchString] = useState('');
   const [isAllTag, setIsAllTag] = useState(true);
   const [tags, setTags] = useState<Tag[]>([]);
 
   useEffect(() => {
-    const filteredPostsTitles: string[] = [...postTitles]    
+    const filteredPostsTitles: string[] = [...postTitles].filter(
+      (title: string) => title.indexOf(searchString.trim().toLowerCase()) !== -1
+      );    
   }, [searchString, postTitles])
 
   return (
