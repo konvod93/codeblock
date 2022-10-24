@@ -45,25 +45,40 @@ const Blog: NextPage = ({ posts }: InferGetStaticPropsType<typeof getStaticProps
       <Typography align='center' color='primary' variant='h1'>
         Blog
       </Typography>
-      <Paper 
-      component='form' 
-      sx={{width: 400, margin: '20px auto', boxShadow: 0}}
+      <Paper
+        component='form'
+        sx={{ width: 400, margin: '20px auto', boxShadow: 0 }}
       >
-        <TextField 
-        style={{ width: 400 }} 
-        placeholder='Search...' 
-        value={searchString} 
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-        setSearchString(e.target.value)
-        }
-        InputProps={{
-          startAdornment: (
-            <SearchIcon style={{ fontSize: 30, marginRight: 8 }} />
-          ),
-          style: { fontSize: 20 }
-        }} 
+        <TextField
+          style={{ width: 400 }}
+          placeholder='Search...'
+          value={searchString}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setSearchString(e.target.value)
+          }
+          InputProps={{
+            startAdornment: (
+              <SearchIcon style={{ fontSize: 30, marginRight: 8 }} />
+            ),
+            style: { fontSize: 20 }
+          }}
         />
         {searchString}
+      </Paper>
+      <Paper sx={{
+        height: 50,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '20px auto',
+        boxShadow: 0
+      }}>
+        <Stack direction='row' spacing={1}>
+          <Chip label='All' variant='outlined' />
+          {tagFilters.map((tag: Tag, index: number) => (
+            <Chip key={index} label={tag} variant='outlined' />
+          ))}
+        </Stack>
       </Paper>
       <div style={{ display: 'flex' }}>
         {posts.map((post: Post, index: number) => (
