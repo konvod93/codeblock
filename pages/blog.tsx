@@ -55,7 +55,13 @@ const Blog: NextPage = ({ posts }: InferGetStaticPropsType<typeof getStaticProps
         value={searchString} 
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
         setSearchString(e.target.value)
-        } 
+        }
+        InputProps={{
+          startAdornment: (
+            <SearchIcon style={{ fontSize: 30, marginRight: 8 }} />
+          ),
+          style: { fontSize: 20 }
+        }} 
         />
         {searchString}
       </Paper>
