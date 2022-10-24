@@ -62,8 +62,7 @@ const Blog: NextPage = ({ posts }: InferGetStaticPropsType<typeof getStaticProps
             ),
             style: { fontSize: 20 }
           }}
-        />
-        {searchString}
+        />        
       </Paper>
       <Paper sx={{
         height: 50,
@@ -74,16 +73,42 @@ const Blog: NextPage = ({ posts }: InferGetStaticPropsType<typeof getStaticProps
         boxShadow: 0
       }}>
         <Stack direction='row' spacing={1}>
-          <Chip label='All' variant='outlined' />
+          <Chip onClick={() => { 
+            setTags([]); 
+            setIsAllTag(true); 
+          }} 
+          label='All' 
+          variant='outlined' 
+          color={isAllTag ? 'secondary' : 'default'} />
           {tagFilters.map((tag: Tag, index: number) => (
-            <Chip key={index} label={tag} variant='outlined' />
+            <Chip onClick={() => { 
+              if (!tags.includes(tag)) {
+                setTags([...tags, tag])
+              } else {
+                const selectedTags = [...tags].filter(
+                  (selectedTag: Tag) => selectedTag !== tag
+                  );
+                  setTags(selectedTags);
+              }
+            }} 
+            key={index} 
+            label={tag} 
+            variant='outlined' 
+            color={tags.includes(tag) ? 'secondary' : 'default'}
+            />
           ))}
         </Stack>
       </Paper>
       <div style={{ display: 'flex' }}>
-        {posts.map((post: Post, index: number) => (
-          <CardComponent key={index} post={post} />
-        ))}
+        {filteredPosts.map((post: Post, index: number) => {
+          if (
+            !isAllTag && 
+            post.metaData.tags.some((tag: Tag) => tags.includes(tag))) {
+            return <CardComponent key={index} post={post} />
+          } else if (isAllTag) {
+            return <CardComponent key={index} post={post} />
+          }
+        })}
       </div>
     </>
   );
