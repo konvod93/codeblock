@@ -4,12 +4,20 @@ import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
 import fs from 'fs';
 import path from "path";
 import matter from "gray-matter";
-import { Typography } from "@mui/material";
+import { TextField, Typography, Chip, Stack, Paper } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { useState } from "react";
 
 const Blog: NextPage = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const [state, setState] = useState(initialState)
   return (
     <>
-    <Typography align='center' color='primary' variant='h1'>Blog</Typography>
+      <Typography align='center' color='primary' variant='h1'>
+        Blog
+      </Typography>
+      <Paper>
+        <TextField style={{ width: 400 }} placeholder='Search...' value={}/>
+      </Paper>
       <div style={{ display: 'flex' }}>
         {posts.map((post: Post, index: number) => (
           <CardComponent key={index} post={post} />
