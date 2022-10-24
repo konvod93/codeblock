@@ -1,5 +1,5 @@
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CardComponent from "../components/Card.component";
 import { Post } from "../models/Post.interface";
 
@@ -12,13 +12,18 @@ import { Tag } from "../models/Tag";
 
 
 const Blog: NextPage = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const [filtredPosts, setFiltredPosts]= useState(posts);
+  const [filteredPosts, setFilteredPosts]= useState(posts);
   const [postTitles, setPostTitles] = useState<string[]>(
     posts.map((post: Post) => post.metaData.title.toLowerCase())
     );
   const [searchString, setSearchString] = useState<Post[]>(posts);
   const [isAllTag, setIsAllTag] = useState(true);
   const [tags, setTags] = useState<Tag[]>([]);
+
+  useEffect(() => {
+    const filteredPostsTitles: string[] = [...postTitles]    
+  }, [searchString, postTitles])
+
   return (
     <>
       <Typography align='center' color='primary' variant='h1'>
