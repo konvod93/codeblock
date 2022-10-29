@@ -7,6 +7,7 @@ import path from 'path';
 import matter from "gray-matter";
 import { serialize } from 'next-mdx-remote/serialize';
 import { MDXRemote } from "next-mdx-remote";
+import LearnNavigationComponent from "../../../components/LearnNavigation.component";
 
 import hljs from "highlight.js";
 import typescript from 'highlight.js/lib/languages/typescript';
@@ -16,14 +17,21 @@ hljs.registerLanguage('typescript', typescript);
 const components = {};
 
 
-export default function Learn({ source, }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Learn({
+    source,
+    topic,
+    slug,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
     useEffect(() => {
         hljs.highlightAll()
     }, [])
     return (
-        <div style={{ width: '600px', margin: 'auto' }}>
-            <MDXRemote {...source} components={components} />
-        </div>
+        <>
+            <LearnNavigationComponent topic={topic} />
+            <div style={{ width: '600px', margin: 'auto' }}>
+                <MDXRemote {...source} components={components} />
+            </div>
+        </>
     )
 }
 
@@ -76,5 +84,5 @@ export const getStaticProps: GetStaticProps<Params> = async ({
     const { data: metaData, content } = matter(learn);
 
     const mdxSource = await serialize(content, { scope: metaData })
-    return { props: { source: mdxSource } };
+    return { props: { source: mdxSource, topic, slug } };
 }

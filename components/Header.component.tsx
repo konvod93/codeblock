@@ -20,7 +20,7 @@ const HeaderComponent: FC<Props> = ({ mode, onChange }) => {
     const customTheme = useTheme();
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar style={{ backgroundColor: customTheme.palette.background.paper, color: customTheme.palette.text.primary }} position="static">
+            <AppBar style={{ backgroundColor: customTheme.palette.background.paper, color: customTheme.palette.text.primary }} position="fixed">
                 <Toolbar>
                     <Link href='/' passHref>
                     <IconButton
